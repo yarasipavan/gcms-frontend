@@ -1,0 +1,7 @@
+.sidebar .nav {
+  padding: 0px !important;
+}
+
+.sidebar ul li :hover {
+  background-color: blue;
+}
