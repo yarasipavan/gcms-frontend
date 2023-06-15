@@ -1,6 +1,6 @@
 import React from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import { Link, useNavigate } from "react-router-dom";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import "./sidebar.css";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -14,6 +14,8 @@ import { faPeopleRoof } from "@fortawesome/free-solid-svg-icons";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import { AiFillStop } from "react-icons/ai";
 import { FaUserCircle } from "react-icons/fa";
+import { BsTools } from "react-icons/bs";
+import { BsArrowReturnLeft, BsArrowReturnRight } from "react-icons/bs";
 
 function SideBar() {
   let { user } = useSelector((store) => store.login);
@@ -24,6 +26,9 @@ function SideBar() {
   const logoutFn = () => {
     dispatch(logout());
     navigate("/");
+  };
+  const changePassword = () => {
+    navigate("change-password");
   };
   return (
     <div className=" sidebar d-flex  flex-column bg-dark text-white p-4 vh-100">
@@ -37,70 +42,81 @@ function SideBar() {
           {user?.role === "admin" ? (
             <>
               <li className="nav-item p-1">
-                <Link to="" className="nav-link text-white">
+                <NavLink to="dashboard" className="nav-link text-white">
                   <i className="bi bi-speedometer me-2 fs-5"></i>
                   <span className="fs-5 d-none d-md-inline">Dashboard</span>
-                </Link>
+                </NavLink>
               </li>
               <li className="nav-item p-1">
-                <Link to="flats" className="nav-link text-white">
+                <NavLink to="flats" className="nav-link text-white">
                   <i className="bi bi-houses-fill me-2 fs-5"></i>
                   <span className="fs-5 d-none d-md-inline">Flats</span>
-                </Link>
+                </NavLink>
               </li>
               <li className="nav-item p-1">
-                <Link to="owners" className="nav-link text-white">
+                <NavLink to="owners" className="nav-link text-white">
                   <i className="bi bi-person-fill me-2 fs-5"></i>
                   <span className="fs-5 d-none d-md-inline">Owners</span>
-                </Link>
+                </NavLink>
               </li>
               <li className="nav-item p-1">
-                <Link to="occupants" className="nav-link text-white">
+                <NavLink to="occupants" className="nav-link text-white">
                   <FontAwesomeIcon icon={faPeopleRoof} className="me-2 fs-5" />
                   <span className="fs-5 d-none d-md-inline">Occupants</span>
-                </Link>
+                </NavLink>
               </li>
               <li className="nav-item p-1">
-                <Link to="security" className="nav-link text-white">
+                <NavLink to="security" className="nav-link text-white">
                   <FontAwesomeIcon
                     icon={faPersonMilitaryPointing}
                     className="me-2 fs-5"
                   />
                   <span className="fs-5 d-none d-md-inline">Security</span>
-                </Link>
+                </NavLink>
               </li>
               <li className="nav-item p-1">
-                <Link to="bills" className="nav-link text-white">
+                <NavLink to="bills" className="nav-link text-white">
                   <FontAwesomeIcon
                     icon={faFileInvoiceDollar}
                     className="me-2 fs-5"
                   />
                   <span className="fs-5 d-none d-md-inline"> Bills</span>
-                </Link>
+                </NavLink>
               </li>
               <li className="nav-item p-1">
-                <Link to="" className="nav-link text-white">
+                <NavLink to="visitors-record" className="nav-link text-white">
                   <FontAwesomeIcon icon={faBook} className="me-2 fs-5" />
                   <span className="fs-5 d-none d-md-inline">
                     {" "}
                     Visitors record
                   </span>
-                </Link>
+                </NavLink>
+              </li>
+              <li className="nav-item p-1">
+                <NavLink to="services" className="nav-link text-white">
+                  <span className="me-2 fs-5">
+                    <BsTools />
+                  </span>
+                  <span className="fs-5 d-none d-md-inline"> Services</span>
+                </NavLink>
               </li>
             </>
           ) : user.role === "occupant" ? (
             <>
               <li className="nav-item p-1">
-                <Link to="using-services" className="nav-link text-white">
+                <NavLink to="using-services" className="nav-link text-white">
                   <FontAwesomeIcon icon={faCircleCheck} className="me-2 fs-5" />
                   <span className="fs-5 d-none d-md-inline">
                     {" "}
                     Using services
                   </span>
-                </Link>
+                </NavLink>
               </li>
               <li className="nav-item p-1">
-                <Link to="not-using-services" className="nav-link text-white">
+                <NavLink
+                  to="not-using-services"
+                  className="nav-link text-white"
+                >
                   {/* <FontAwesomeIcon icon={faCircleCheck} className="me-2 fs-5" /> */}
                   <span className="me-2 fs-5">
                     <AiFillStop />
@@ -109,20 +125,47 @@ function SideBar() {
                     {" "}
                     Not using services
                   </span>
-                </Link>
+                </NavLink>
               </li>
               <li className="nav-item p-1">
-                <Link to="bills" className="nav-link text-white">
+                <NavLink to="bills" className="nav-link text-white">
                   <FontAwesomeIcon
                     icon={faFileInvoiceDollar}
                     className="me-2 fs-5"
                   />
                   <span className="fs-5 d-none d-md-inline">Bills</span>
-                </Link>
+                </NavLink>
               </li>
             </>
           ) : (
-            ""
+            <>
+              <li className="nav-item p-1">
+                <NavLink to="add-visitor" className="nav-link text-white">
+                  <span className="me-2 fs-5">
+                    <BsArrowReturnRight />
+                  </span>
+                  <span className="fs-5 d-none d-md-inline">Add Visitor</span>
+                </NavLink>
+              </li>
+              <li className="nav-item p-1">
+                <NavLink to="note-return" className="nav-link text-white">
+                  <span className="me-2 fs-5">
+                    <BsArrowReturnLeft />
+                  </span>
+                  <span className="fs-5 d-none d-md-inline">Return Note</span>
+                </NavLink>
+              </li>
+              <li className="nav-item p-1">
+                <NavLink to="visitors-record" className="nav-link text-white">
+                  <span className="me-2 fs-5">
+                    <FontAwesomeIcon icon={faBook} className="me-2 fs-5" />
+                  </span>
+                  <span className="fs-5 d-none d-md-inline">
+                    Visitors Record
+                  </span>
+                </NavLink>
+              </li>
+            </>
           )}
         </ul>
       </div>
@@ -132,16 +175,26 @@ function SideBar() {
         {/* <span>{user.username}</span> */}
         <span className="d-none d-md-inline">
           <NavDropdown title={`${user.username}`} id="basic-nav-dropdown">
-            <NavDropdown.Item>Change Password</NavDropdown.Item>
-            <NavDropdown.Item>Profile</NavDropdown.Item>
+            <NavDropdown.Item onClick={changePassword}>
+              Change Password
+            </NavDropdown.Item>
+            {user.role === "occupant" && (
+              <NavDropdown.Item onClick={() => navigate("profile")}>
+                Profile
+              </NavDropdown.Item>
+            )}
             <NavDropdown.Divider />
             <NavDropdown.Item onClick={logoutFn}>Logout</NavDropdown.Item>
           </NavDropdown>
         </span>
         <span className="d-inline d-md-none me-2 fs-5">
           <NavDropdown title={<FaUserCircle />} id="basic-nav-dropdown">
-            <NavDropdown.Item>Change Password</NavDropdown.Item>
-            <NavDropdown.Item>Profile</NavDropdown.Item>
+            <NavDropdown.Item onClick={changePassword}>
+              Change Password
+            </NavDropdown.Item>
+            <NavDropdown.Item onClick={() => navigate("profile")}>
+              Profile
+            </NavDropdown.Item>
             <NavDropdown.Divider />
             <NavDropdown.Item onClick={logoutFn}>Logout</NavDropdown.Item>
           </NavDropdown>

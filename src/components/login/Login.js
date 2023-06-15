@@ -14,10 +14,9 @@ function Login() {
       else if (user?.role === "occupant") {
         navigate("/occupant");
       } else if (user?.role === "security") {
-        navigate("/super-admin");
+        navigate("/security");
       }
     }
-    console.log("******", user, status);
   }, [status]);
 
   let dispatch = useDispatch();
@@ -65,7 +64,7 @@ function Login() {
           </button>
         </div>
         <div className="mb-3">
-          <Link to="forgot-password" style={{ textDecoration: "none" }}>
+          <Link to="/portal/forgot-password" style={{ textDecoration: "none" }}>
             Forgot Password
           </Link>
         </div>

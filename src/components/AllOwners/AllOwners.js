@@ -164,11 +164,19 @@ function AllOwners({ owners, updateOwner }) {
                               className="form-control"
                               id="name"
                               {...register("name", {
-                                required: true,
+                                required: "name is required",
+                                minLength: {
+                                  value: 3,
+                                  message:
+                                    "name must contain atleast3 characters",
+                                },
                               })}
-                            />
-                            {errors.name?.type === "required" && (
-                              <p className="text-danger">Enter name</p>
+                            ></input>
+
+                            {errors.name && (
+                              <p className="text-danger">
+                                {errors.name.message}
+                              </p>
                             )}
                           </div>
                         </div>
@@ -203,11 +211,28 @@ function AllOwners({ owners, updateOwner }) {
                               placeholder="9121xxxxx"
                               className="form-control"
                               {...register("phone", {
-                                required: true,
+                                required: "Phone number is required",
+                                minLength: {
+                                  value: 10,
+                                  message:
+                                    "Phone number must be at least 10 digits",
+                                },
+                                maxLength: {
+                                  value: 10,
+                                  message:
+                                    "Phone number must not exceed 10 digits",
+                                },
+                                pattern: {
+                                  value: /^\d+$/,
+                                  message:
+                                    "Phone number must only contain digits",
+                                },
                               })}
                             />
-                            {errors.phone?.type === "required" && (
-                              <p className="text-danger">Enter phone number</p>
+                            {errors.phone && (
+                              <p className="text-danger">
+                                {errors.phone.message}
+                              </p>
                             )}
                           </div>
                         </div>

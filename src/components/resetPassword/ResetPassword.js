@@ -1,25 +1,28 @@
-import React, { useState, memo } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { Link } from "react-router-dom";
-function ForgotPassword() {
+import { Link, useSearchParams } from "react-router-dom";
+
+function ResetPassword() {
   let [errorMessage, setErrorMessage] = useState("");
   let [message, setMessage] = useState("");
-  let [sendMailBtn, setSendMailBtn] = useState("");
   let {
     register,
     handleSubmit,
     formState: { errors },
     reset,
   } = useForm();
-
+  const [queryParameters] = useSearchParams();
+  let token = queryParameters.get("token");
   const onSubmit = async (formObj) => {
-    setSendMailBtn("disabled");
+    //add token into the form obj
+    formObj.token = token;
+
     try {
       setMessage("");
       setErrorMessage("");
       let res = await axios.post(
-        `${process.env.REACT_APP_SERVER_URL}/forgot-password`,
+        `${process.env.REACT_APP_SERVER_URL}/reset-password`,
         formObj
       );
 
@@ -29,39 +32,30 @@ function ForgotPassword() {
     } catch (err) {
       if (err.response?.data?.alertMsg) {
         setErrorMessage(err.response.data.alertMsg);
-      } else {
-        setErrorMessage(err.message);
-      }
+      } else setErrorMessage(err.message);
+      console.log(err);
       setMessage("");
-    } finally {
-      setSendMailBtn("");
     }
   };
   return (
     <div>
-      <h4>Forgot Password</h4>
+      <h4>Reset Password</h4>
       <form className="mt-3" onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-3">
           <input
-            type="email"
-            placeholder="Email"
+            type="password"
+            placeholder="set you password"
             className="form-control p-3 "
-            {...register("username", { required: true })}
+            {...register("password", { required: true })}
           />
-          {errors.username?.type === "required" && (
-            <p className="text-danger">Please enter a valid email address.</p>
+          {errors.password?.type === "required" && (
+            <p className="text-danger">Please Set your password.</p>
           )}
         </div>
 
         <div className="mb-3">
-          <button
-            className={
-              sendMailBtn
-                ? "disabled btn btn-primary d-block form-control pt-3 pb-3"
-                : "btn btn-primary d-block form-control pt-3 pb-3"
-            }
-          >
-            {sendMailBtn ? "Sending mail...." : "Send mail"}
+          <button className="btn btn-primary d-block form-control pt-3 pb-3">
+            Set Password
           </button>
         </div>
         <div className="mb-3">
@@ -78,4 +72,4 @@ function ForgotPassword() {
   );
 }
 
-export default ForgotPassword;
+export default ResetPassword;

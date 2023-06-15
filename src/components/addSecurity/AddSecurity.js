@@ -78,11 +78,19 @@ function AddSecurity({ addSecurity }) {
                     id="name"
                     className="form-control "
                     placeholder="Name"
-                    {...register("name", { required: true })}
+                    {...register("name", {
+                      required: "name is required",
+                      minLength: {
+                        value: 3,
+                        message: "name must contain atleast 3 characters",
+                      },
+                    })}
                   ></input>
 
-                  {errors.occupant_name?.type === "required" && (
-                    <p className="text-danger">Please enter name</p>
+                  {errors.occupant_name && (
+                    <p className="text-danger">
+                      {errors.occupant_name.message}
+                    </p>
                   )}
                 </div>
                 <div className="mt-3">
@@ -106,13 +114,28 @@ function AddSecurity({ addSecurity }) {
                     Phone number
                   </label>
                   <input
-                    type="tel"
-                    className="form-control "
-                    placeholder="9121xxxxxx"
-                    {...register("phone", { required: true })}
-                  ></input>
-                  {errors.phone?.type === "required" && (
-                    <p className="text-danger">Please enter phone number</p>
+                    type="number"
+                    placeholder="9121xxxxx"
+                    className="form-control"
+                    id="phone"
+                    {...register("phone", {
+                      required: "Phone number is required",
+                      minLength: {
+                        value: 10,
+                        message: "Phone number must be at least 10 digits",
+                      },
+                      maxLength: {
+                        value: 10,
+                        message: "Phone number must not exceed 10 digits",
+                      },
+                      pattern: {
+                        value: /^\d+$/,
+                        message: "Phone number must only contain digits",
+                      },
+                    })}
+                  />
+                  {errors.phone && (
+                    <p className="text-danger">{errors.phone.message}</p>
                   )}
                 </div>
 

@@ -15,6 +15,14 @@ import Occupant from "./components/occupant/Occupant";
 import Usingservices from "./components/usingServices/Usingservices";
 import NotUsingServices from "./components/notUsingServices/NotUsingServices";
 import OccupantBill from "./components/occupantBill/OccupantBill";
+import Security from "./components/security/Security";
+import AddVisitor from "./components/addVisitor/AddVisitor";
+import VisitorReturn from "./components/visitorReturn/VisitorReturn";
+import VisitorsRecord from "./components/visitorsRecord/VisitorsRecord";
+import ChangePassword from "./components/changePassword/ChangePassword";
+import Profile from "./components/profile/Profile";
+import ResetPassword from "./components/resetPassword/ResetPassword";
+import Services from "./components/services/Services";
 
 function App() {
   const browserRouterObj = createBrowserRouter([
@@ -39,6 +47,10 @@ function App() {
           path: "forgot-password",
           element: <ForgotPassword />,
         },
+        {
+          path: "reset-password",
+          element: <ResetPassword />,
+        },
       ],
     },
     {
@@ -47,6 +59,10 @@ function App() {
       children: [
         {
           path: "",
+          element: <Dashboard />,
+        },
+        {
+          path: "dashboard",
           element: <Dashboard />,
         },
         {
@@ -69,6 +85,18 @@ function App() {
           path: "bills",
           element: <OccupantBill />,
         },
+        {
+          path: "visitors-record",
+          element: <VisitorsRecord />,
+        },
+        {
+          path: "services",
+          element: <Services />,
+        },
+        {
+          path: "change-password",
+          element: <ChangePassword />,
+        },
       ],
     },
     {
@@ -90,6 +118,40 @@ function App() {
         {
           path: "bills",
           element: <OccupantBill />,
+        },
+        {
+          path: "change-password",
+          element: <ChangePassword />,
+        },
+        {
+          path: "profile",
+          element: <Profile />,
+        },
+      ],
+    },
+    {
+      path: "security",
+      element: <Security />,
+      children: [
+        {
+          path: "",
+          element: <AddVisitor />,
+        },
+        {
+          path: "add-visitor",
+          element: <AddVisitor />,
+        },
+        {
+          path: "note-return",
+          element: <VisitorReturn />,
+        },
+        {
+          path: "visitors-record",
+          element: <VisitorsRecord />,
+        },
+        {
+          path: "change-password",
+          element: <ChangePassword />,
         },
       ],
     },

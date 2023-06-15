@@ -210,30 +210,18 @@ function AllOccupants({ occupants, updateOccupant, deleteOccupant }) {
                               className="form-control"
                               id="occupant_name"
                               {...register("occupant_name", {
-                                required: true,
+                                required: "name is required",
+                                minLength: {
+                                  value: 3,
+                                  message:
+                                    "name must contain atleast 3 characters",
+                                },
                               })}
                             />
-                            {errors.occupant_name?.type === "required" && (
-                              <p className="text-danger">Enter name</p>
-                            )}
-                          </div>
-                        </div>
-                        <div className="col-12 ">
-                          {/* email */}
-                          <div className="mt-3">
-                            <label className="mb-1" htmlFor="email">
-                              Email
-                            </label>
-                            <input
-                              type="email"
-                              placeholder="email"
-                              className="form-control"
-                              {...register("email", {
-                                required: true,
-                              })}
-                            />
-                            {errors.email?.type === "required" && (
-                              <p className="text-danger">Enter email</p>
+                            {errors.occupant_name && (
+                              <p className="text-danger">
+                                {errors.occupant_name.message}
+                              </p>
                             )}
                           </div>
                         </div>
@@ -249,11 +237,28 @@ function AllOccupants({ occupants, updateOccupant, deleteOccupant }) {
                               placeholder="9121xxxxx"
                               className="form-control"
                               {...register("phone", {
-                                required: true,
+                                required: "Phone number is required",
+                                minLength: {
+                                  value: 10,
+                                  message:
+                                    "Phone number must be at least 10 digits",
+                                },
+                                maxLength: {
+                                  value: 10,
+                                  message:
+                                    "Phone number must not exceed 10 digits",
+                                },
+                                pattern: {
+                                  value: /^\d+$/,
+                                  message:
+                                    "Phone number must only contain digits",
+                                },
                               })}
                             />
-                            {errors.phone?.type === "required" && (
-                              <p className="text-danger">Enter phone number</p>
+                            {errors.phone && (
+                              <p className="text-danger">
+                                {errors.phone.message}
+                              </p>
                             )}
                           </div>
                         </div>

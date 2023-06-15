@@ -175,14 +175,15 @@ function OccupantBill() {
       {bill && (
         <div>
           <div
-            className="col col-12 col-md-4 mx-auto mt-3 text-center"
-            id="printContent"
+            className="col col-12 col-md-8 mx-auto mt-3 text-center"
+            id="section-to-print"
           >
             <h5 className="mt-5 mb-3">
               Bill Details
               <button
                 className="btn btn-outline-primary mb-3 float-end"
                 onClick={() => window.print()}
+                id="print-btn"
               >
                 Print
               </button>
