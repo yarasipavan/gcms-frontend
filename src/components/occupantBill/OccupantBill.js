@@ -105,8 +105,14 @@ function OccupantBill() {
     }
   };
 
-  const handlePrint = () => {
-    window.print();
+  const gotoPayment = async (bill_id) => {
+    let link = await axios.get(
+      `${process.env.REACT_APP_SERVER_URL}/occupant/paylink/${bill_id}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    window.open(link.data, "_self");
   };
 
   return (
@@ -175,7 +181,7 @@ function OccupantBill() {
       {bill && (
         <div>
           <div
-            className="col col-12 col-md-8 mx-auto mt-3 text-center"
+            className="col col-12 col-md-8 mx-auto mt-3 text-center mb-5"
             id="section-to-print"
           >
             <h5 className="mt-5 mb-3">
@@ -189,9 +195,22 @@ function OccupantBill() {
               </button>
             </h5>
             <div className="text-start fw-bold">
-              <span>Bill number: {bill.id}</span>
-
-              <span className="float-end">Occupant Id :{bill.occupant_id}</span>
+              <div>
+                <span>Bill number: {bill.id}</span>
+                <span className="float-end">
+                  Occupant Id :{bill.occupant_id}
+                </span>
+              </div>
+              <div>
+                <span>
+                  Bill status: {bill.bill_status ? "Paid" : "Not Paid"}
+                </span>
+                {bill.bill_status ? (
+                  <span className="float-end">Paid On :{bill.paid_date}</span>
+                ) : (
+                  ""
+                )}
+              </div>
             </div>
             <Table responsive="lg" striped hover bordered className="mt-3">
               <thead style={{ fontSize: "0.9rem" }}>
@@ -251,10 +270,20 @@ function OccupantBill() {
                 </tr>
               </tbody>
             </Table>
+
             <p className="fw-bold"> Total Bill: {bill.total_bill}</p>
             <p className="text-start">
               Note: Bill calculated on {bill.billed_date}
             </p>
+
+            {user.role == "occupant" && !bill.bill_status && (
+              <button
+                className="btn btn-success"
+                onClick={() => gotoPayment(bill.id)}
+              >
+                Pay Bill
+              </button>
+            )}
           </div>
         </div>
       )}

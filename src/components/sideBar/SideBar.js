@@ -192,9 +192,11 @@ function SideBar() {
             <NavDropdown.Item onClick={changePassword}>
               Change Password
             </NavDropdown.Item>
-            <NavDropdown.Item onClick={() => navigate("profile")}>
-              Profile
-            </NavDropdown.Item>
+            {user.role === "occupant" && (
+              <NavDropdown.Item onClick={() => navigate("profile")}>
+                Profile
+              </NavDropdown.Item>
+            )}
             <NavDropdown.Divider />
             <NavDropdown.Item onClick={logoutFn}>Logout</NavDropdown.Item>
           </NavDropdown>
