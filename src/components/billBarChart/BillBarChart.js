@@ -113,10 +113,10 @@ function BillBarChart() {
       <h5 className="text-center">
         Total bill graph generated in last 12 months
       </h5>
-      <div className="w-50">
+      <div className="col col-lg-6">
         <Bar data={data} options={options}></Bar>
       </div>
-      <div className="w-50">
+      <div className="col col-lg-6">
         <Line data={data} options={options}></Line>
       </div>
     </div>

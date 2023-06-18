@@ -1,5 +1,4 @@
 import "./App.css";
-
 import Home from "./components/home/Home";
 import Login from "./components/login/Login";
 import PublicRouteLayout from "./components/publicRouteLayout/PublicRouteLayout";
@@ -23,7 +22,8 @@ import ChangePassword from "./components/changePassword/ChangePassword";
 import Profile from "./components/profile/Profile";
 import ResetPassword from "./components/resetPassword/ResetPassword";
 import Services from "./components/services/Services";
-
+import PaymentSuccess from "./components/payment/PaymentSuccess";
+import PaymentFailure from "./components/payment/PaymentFailure";
 function App() {
   const browserRouterObj = createBrowserRouter([
     {
@@ -50,6 +50,14 @@ function App() {
         {
           path: "reset-password",
           element: <ResetPassword />,
+        },
+        {
+          path: "success",
+          element: <PaymentSuccess />,
+        },
+        {
+          path: "failure",
+          element: <PaymentFailure />,
         },
       ],
     },
@@ -158,5 +166,4 @@ function App() {
   ]);
   return <RouterProvider router={browserRouterObj}></RouterProvider>;
 }
-
 export default App;
