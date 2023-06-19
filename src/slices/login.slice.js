@@ -67,6 +67,14 @@ export const loginSlice = createSlice({
       state.status = "idle";
       state.errorMessage = "";
     },
+    activate: (state) => {
+      state.user.isfirstlogin = false;
+      // update the same in local storage
+      let user = localStorage.getItem("user");
+      user = JSON.parse(user);
+      user.isfirstlogin = false;
+      localStorage.setItem("user", JSON.stringify(user));
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(userLogin.pending, (state, actionObj) => {
@@ -88,6 +96,6 @@ export const loginSlice = createSlice({
 });
 
 //export action creation functions
-export const { logout } = loginSlice.actions;
+export const { logout, activate } = loginSlice.actions;
 //export all reducers as a single reducer
 export default loginSlice.reducer;

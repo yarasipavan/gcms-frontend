@@ -11,6 +11,7 @@ import { logout } from "../../slices/login.slice";
 import BillBarChart from "../billBarChart/BillBarChart";
 
 function Dashboard() {
+  let { user } = useSelector((store) => store.login);
   let navigate = useNavigate();
   let dispatch = useDispatch();
   let token = localStorage.getItem("token");
@@ -47,6 +48,11 @@ function Dashboard() {
     }
   };
 
+  useEffect(() => {
+    if (user.isfirstlogin) {
+      navigate("/admin/change-password");
+    }
+  }, []);
   useEffect(() => {
     getDashboard();
   }, []);

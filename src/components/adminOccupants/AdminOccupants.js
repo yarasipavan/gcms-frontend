@@ -8,7 +8,7 @@ import AddOccupant from "../AddOccupant/AddOccupant";
 
 function AdminOccupants() {
   let { user } = useSelector((store) => store.login);
-  let [ocuupantsFetched, setOccupantsFetched] = useState(0);
+  let [occupantsFetched, setOccupantsFetched] = useState(0);
   let [occupants, setOccupants] = useState([]);
   let [errorMessage, setErrorMessage] = useState("");
   let [message, setMessage] = useState("");

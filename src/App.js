@@ -24,6 +24,7 @@ import ResetPassword from "./components/resetPassword/ResetPassword";
 import Services from "./components/services/Services";
 import PaymentSuccess from "./components/payment/PaymentSuccess";
 import PaymentFailure from "./components/payment/PaymentFailure";
+import GenerateCredentials from "./components/generatecredentials/GenerateCredentials";
 function App() {
   const browserRouterObj = createBrowserRouter([
     {
@@ -104,6 +105,10 @@ function App() {
         {
           path: "change-password",
           element: <ChangePassword />,
+        },
+        {
+          path: "generate-credentials",
+          element: <GenerateCredentials />,
         },
       ],
     },
