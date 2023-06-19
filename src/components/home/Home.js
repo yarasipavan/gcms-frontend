@@ -18,7 +18,6 @@ const Home = () => {
         navigate("/security");
       }
     }
-    console.log("******", user, status);
   }, [status]);
   if (user)
     return (
