@@ -41,6 +41,12 @@ function Usingservices() {
       }
     }
   };
+
+  useEffect(() => {
+    if (user.isfirstlogin) {
+      navigate("/occupant/change-password");
+    }
+  }, []);
   useEffect(() => {
     getServices();
   }, []);

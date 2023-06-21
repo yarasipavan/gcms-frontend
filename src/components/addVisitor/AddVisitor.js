@@ -49,7 +49,11 @@ function AddVisitor() {
   };
 
   useEffect(() => {
-    getFlats();
+    if (user.isfirstlogin) {
+      navigate("/security/change-password");
+    } else {
+      getFlats();
+    }
   }, []);
 
   const onSubmit = async (formObj) => {

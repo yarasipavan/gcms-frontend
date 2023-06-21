@@ -3,11 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { logout } from "../../slices/login.slice";
+import { logout, activate } from "../../slices/login.slice";
 
 function ChangePassword() {
   let navigate = useNavigate();
   let { status, errorMessage, user } = useSelector((store) => store.login);
+  console.log(user);
   let [message, setMessage] = useState("");
   let [errMessage, setErrMessage] = useState("");
   let dispatch = useDispatch();
@@ -33,6 +34,7 @@ function ChangePassword() {
 
       setErrMessage("");
       setMessage(res.data.message);
+      dispatch(activate());
       reset();
     } catch (err) {
       if (err.response?.status === 401) {
@@ -40,6 +42,7 @@ function ChangePassword() {
         dispatch(logout());
         navigate("/");
       } else {
+        console.log(err);
         console.log(err.response?.data?.alertMsg);
         if (err.response?.data?.alertMsg) {
           setErrMessage(err.response.data.alertMsg);
@@ -56,7 +59,12 @@ function ChangePassword() {
   return (
     <div>
       <div className="container pt-5">
-        <div className="row">
+        <div className="row text-center">
+          {user.isfirstlogin && (
+            <h5 className="text-success">
+              Change password to activate your account
+            </h5>
+          )}
           <div className="card shadow col col-sm-10 col-md-8 col-lg-4 mx-auto mt-5 p-5">
             <h4>Change password</h4>
             <form className="mt-3" onSubmit={handleSubmit(onSubmit)}>
