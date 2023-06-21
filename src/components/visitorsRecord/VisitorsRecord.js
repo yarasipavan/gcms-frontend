@@ -14,6 +14,11 @@ function VisitorsRecord() {
   let [visitors, setVisitors] = useState([]);
   let { user } = useSelector((store) => store.login);
   let [visitorsFetched, setVisitorsFetched] = useState(0);
+  let [startDateTime, setStartDateTime] = useState("");
+  let [endDateTime, setEndDateTime] = useState("");
+  let [total, setTotal] = useState(0);
+  let [activePage, setActivePage] = useState(1);
+  let [limit, setLimit] = useState(5);
   let {
     register,
     handleSubmit,
@@ -28,11 +33,14 @@ function VisitorsRecord() {
     setVisitorsFetched(1);
     if (!formObj.end_time) {
       delete formObj.end_time;
+      setEndDateTime("");
+    } else {
+      setEndDateTime(formObj.end_time);
     }
-    console.log(formObj);
+    setStartDateTime(formObj.start_time);
     try {
       let res = await axios.post(
-        `${process.env.REACT_APP_SERVER_URL}/security/visitors-record-on-time`,
+        `${process.env.REACT_APP_SERVER_URL}/security/visitors-record-on-time?limit=${limit}`,
         formObj,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -42,7 +50,8 @@ function VisitorsRecord() {
       if (res.data.alertMsg) {
         throw new Error(res.data.alertMsg);
       } else {
-        setVisitors(res.data);
+        setVisitors(res.data.visitors);
+        setTotal(res.data.total);
         setErrorMessage("");
         reset();
         setVisitorsFetched(2);
@@ -63,6 +72,61 @@ function VisitorsRecord() {
       }
     }
   };
+  const totalPages = (total) => {
+    const pages = [];
+
+    for (let i = 1; i <= Math.ceil(total / limit); i++) pages.push(i);
+    return pages;
+  };
+
+  const getVisitorsOfPage = async (page) => {
+    setActivePage(page);
+    let body = {};
+    body.start_time = startDateTime;
+    if (endDateTime) body.end_time = endDateTime;
+    //  call the page
+    try {
+      let res = await axios.post(
+        `${process.env.REACT_APP_SERVER_URL}/security/visitors-record-on-time?page=${page}&limit=${limit}`,
+        body,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      if (res.data.alertMsg) {
+        throw new Error(res.data.alertMsg);
+      } else {
+        setVisitors(res.data.visitors);
+        setTotal(res.data.total);
+        setErrorMessage("");
+        reset();
+        setVisitorsFetched(2);
+      }
+    } catch (err) {
+      if (err.response?.status === 401) {
+        //logout completely and navigate to login
+        dispatch(logout());
+        navigate("/");
+      } else {
+        if (err.response?.data?.alertMsg) {
+          setErrorMessage(err.response.data.alertMsg);
+          setMessage("");
+        } else {
+          setErrorMessage(err.message);
+          setMessage("");
+        }
+      }
+    }
+  };
+
+  const handleChangeLimit = (event) => {
+    console.log(Number(event.target.value));
+    setLimit(Number(event.target.value));
+  };
+  useEffect(() => {
+    getVisitorsOfPage(1);
+  }, [limit]);
 
   return (
     <div className="mt-5 text-center">
@@ -118,11 +182,60 @@ function VisitorsRecord() {
           <div className="row">
             <div className="col">
               <button
-                className="btn btn-outline-primary  me-5 "
+                className="btn btn-outline-primary  me-5 mt-5 "
                 onClick={() => window.print()}
               >
                 Print
               </button>
+              <div className="col mt-5 ms-5 ">
+                <nav aria-label="Page navigation example">
+                  <ul className="pagination  ">
+                    <span className="me-5 ">
+                      <select className="p-2" onChange={handleChangeLimit}>
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                      </select>
+                    </span>
+                    {activePage != 1 && (
+                      <li className="page-item">
+                        <button
+                          className="page-link"
+                          onClick={() => getVisitorsOfPage(activePage - 1)}
+                        >
+                          {"<<"}
+                        </button>
+                      </li>
+                    )}
+                    {totalPages(total).map((page) => (
+                      <li
+                        key={page}
+                        className={`page-item ${
+                          page == activePage ? "active" : ""
+                        }`}
+                      >
+                        <button
+                          className="page-link "
+                          onClick={() => getVisitorsOfPage(page)}
+                        >
+                          {page}
+                        </button>
+                      </li>
+                    ))}
+                    {activePage != Math.ceil(total / limit) && (
+                      <li className="page-item">
+                        <button
+                          className="page-link"
+                          onClick={() => getVisitorsOfPage(activePage + 1)}
+                        >
+                          {">>"}
+                        </button>
+                      </li>
+                    )}
+                  </ul>
+                </nav>
+              </div>
               <Table
                 responsive="lg"
                 striped
